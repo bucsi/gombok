@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="screenshot" data-mod1="ctrl" data-mod2="alt" data-key="s">Screenshot</button>
+    <button id="mute" data-key="NumLock">Mute/Unmute</button>
+  </body>
+  <script>
+    /**
+     *
+     * @param {Node} szulo egy HTML elem querySelectorral kiválasztva (pl. `document.querySelector("ul")`)
+     * @param {keyof HTMLElementTagNameMap} gyerek egy CSS szelektor, ami leírja azon elemeket, melyeken szeretnénk futtatni a fgv-t (pl. `"a"`)
+     * @param {string} mikor egy esemény, stringként (pl. `"click"`)
+     * @param {(ev: Event, target: Node) => null} mit A függvény, amit futtatunk
+     */
+    function delegal(szulo, gyerek, mikor, mit) {
+      function esemenyKezelo(ev) {
+        const esemenyCelja = ev.target
+        const esemenyKezeloje = this
+        const legkozelebbiKeresettElem = esemenyCelja.closest(gyerek)
+
+        if (esemenyKezeloje.contains(legkozelebbiKeresettElem)) {
+          mit(ev, legkozelebbiKeresettElem)
+        }
+      }
+
+      szulo.addEventListener(mikor, esemenyKezelo)
+    }
+
+    const btns = document.querySelectorAll("button")
+    delegal(document, "button", "click", async (ev, target) => {
+      const mod1 = target.dataset.mod1
+      const mod2 = target.dataset.mod2
+      const key = target.dataset.key
+      console.log(`${mod1 ? mod1 : ""}${mod2 ? mod2 : ""}${key}`)
+      const URL = window.location.href.slice(0, -"/buttons".length) + "/press"
+      await fetch(URL + `?mod1=${mod1}&mod2=${mod2}&key=${key}`)
+    })
+  </script>
+</html>
