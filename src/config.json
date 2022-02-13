@@ -1,0 +1,8 @@
+{
+    "buttons": [
+        { "name": "Screenshot", "mod1": "ctrl", "mod2": "alt", "key": "s" },
+        { "name": "Toggle Mute", "key": "numlock" }
+    ],
+    "port": 1234,
+    "debug": true
+}
